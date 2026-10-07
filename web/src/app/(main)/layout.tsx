@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import * as React from "react";
 
 import { AppSidebar } from "@/app/(main)/_components/sidebar/app-sidebar";
+import { initI18n } from "@/lib/i18n-runtime";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { getClientCookie } from "@/lib/cookie.client";
@@ -36,6 +37,8 @@ export default function Layout({ children }: Readonly<{ children: ReactNode }>) 
   React.useEffect(() => {
     if (auth.getToken()) {
       setAuthed(true);
+      // Initialize Korean translation runtime
+      initI18n();
     } else {
       // 客户端守卫认为未登录时，必须同时清掉 cookie：否则 proxy.ts 仅凭
       // “cookie 存在”就把我们从 /login 又重定向回主界面，与本守卫来回弹跳

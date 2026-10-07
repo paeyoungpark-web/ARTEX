@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/lib/api";
 import { auth } from "@/lib/auth";
+import { initI18n } from "@/lib/i18n-runtime";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,6 +32,10 @@ export default function LoginPage() {
     if (!el) return;
     if (el.scrollTop + el.clientHeight >= el.scrollHeight - 8) setReadToEnd(true);
   }
+
+  useEffect(() => {
+    initI18n();
+  }, []);
 
   useEffect(() => {
     if (!termsOpen) return;
