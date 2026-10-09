@@ -1,0 +1,12 @@
+id: U-04
+verdict_rules:
+  - condition: "All accounts use shadow"
+    field: exposed_count
+    operator: equals
+    value: 0
+    verdict: pass
+  - condition: "Some accounts have exposed passwords"
+    field: exposed_count
+    operator: greater_than
+    value: 0
+    verdict: fail

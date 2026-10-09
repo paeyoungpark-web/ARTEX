@@ -1,0 +1,35 @@
+# 로뎀가드 한국 특화 사이드카 Dockerfile
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openssh-client sshpass curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Python 의존성
+RUN pip install --no-cache-dir \
+    fastapi uvicorn[standard] paramiko pyyaml httpx openpyxl \
+    sqlalchemy asyncpg pydantic pydantic-settings \
+    redis celery[redis] boto3 jinja2 aiosqlite
+
+# 소스 복사
+COPY kr/inspectors/ /app/src/inspectors/
+COPY kr/judgment/ /app/src/judgment/
+COPY kr/report/ /app/src/report/
+COPY kr/sast/ /app/src/sast/
+COPY kr/dast/ /app/src/dast/
+COPY kr/field/ /app/src/field/
+COPY kr/frameworks.py /app/src/core/frameworks.py
+COPY kr/categories.py /app/src/core/categories.py
+COPY kr/knowledge/ /app/knowledge/
+
+# __init__.py 생성
+RUN for d in src src/core src/inspectors src/judgment src/report src/sast src/dast src/field src/connectors src/models src/api; do \
+    mkdir -p /app/$d && touch /app/$d/__init__.py; done
+
+# API 메인 복사 (로뎀가드 standalone에서 가져옴)
+COPY kr/sidecar_main.py /app/src/api/main.py
+
+EXPOSE 8800
+CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8800"]

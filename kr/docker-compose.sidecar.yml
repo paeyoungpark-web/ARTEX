@@ -1,0 +1,39 @@
+# ARTEX + 로뎀가드 사이드카 통합 Docker Compose
+# ARTEX 기존 docker-compose.yml과 함께 사용:
+#   docker compose -f docker-compose.yml -f kr/docker-compose.sidecar.yml up -d
+version: "3.9"
+
+services:
+  # ARTEX 기존 서비스 (postgres, artex)는 docker-compose.yml에서 정의
+  
+  # 한국 특화 사이드카 서비스
+  kr-sidecar:
+    build:
+      context: ..
+      dockerfile: kr/Dockerfile.sidecar
+    container_name: artex-kr-sidecar
+    restart: unless-stopped
+    environment:
+      # ARTEX와 같은 PostgreSQL 사용
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER:-artex}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB:-artex}
+      # LLM (ARTEX와 동일한 LLM 설정 공유)
+      LLM_BASE_URL: ${ARTEX_LLM_BASE_URL:-http://host.docker.internal:4000/v1}
+      LLM_API_KEY: ${ARTEX_LLM_API_KEY:-}
+      LLM_MODEL: ${ARTEX_LLM_MODEL:-claude-haiku-4-5}
+    ports:
+      - "${KR_PORT:-8800}:8800"
+    volumes:
+      - ../kr/knowledge:/app/knowledge:ro
+      - kr-data:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - default
+
+volumes:
+  kr-data:

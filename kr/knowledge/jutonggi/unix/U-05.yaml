@@ -1,0 +1,16 @@
+id: U-05
+standard: jutonggi
+category: 파일및디렉터리관리
+title: root 홈, 패스 디렉터리 권한 및 패스 설정
+description: root 계정의 PATH 환경변수에 "."(현재 디렉터리)이 포함되어 있는지 점검
+risk_level: high
+target_types: [server_unix]
+check_method: script
+script_ref: scripts/unix/U-05.sh
+pass_criteria: root의 PATH에 "."이 포함되어 있지 않음
+fail_criteria: root의 PATH에 "." 또는 "::" 포함
+remediation: |
+  root의 .profile, .bash_profile 등에서 PATH에 포함된 "." 제거
+  export PATH에서 현재 디렉터리 참조 삭제
+ismsp_mapping: ["2.5.1"]
+rule_ref: rules/unix/U-05.rule.yaml

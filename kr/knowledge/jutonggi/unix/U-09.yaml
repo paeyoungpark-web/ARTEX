@@ -1,0 +1,16 @@
+id: U-09
+standard: jutonggi
+category: 파일및디렉터리관리
+title: /etc/hosts 파일 소유자 및 권한 설정
+description: /etc/hosts 파일의 소유자가 root이고 권한이 600 이하인지 점검
+risk_level: high
+target_types: [server_unix]
+check_method: script
+script_ref: scripts/unix/U-09.sh
+pass_criteria: /etc/hosts 파일 소유자 root, 권한 600 이하
+fail_criteria: 소유자가 root가 아니거나 권한이 600 초과
+remediation: |
+  chown root /etc/hosts
+  chmod 600 /etc/hosts
+ismsp_mapping: ["2.5.1"]
+rule_ref: rules/unix/U-09.rule.yaml

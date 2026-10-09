@@ -1,0 +1,14 @@
+id: U-04
+standard: jutonggi
+category: 계정관리
+title: 패스워드 파일 보호
+description: 패스워드 암호화 저장 여부 및 shadow 파일 사용 점검
+risk_level: high
+target_types: [server_unix]
+check_method: script
+script_ref: scripts/unix/U-04.sh
+pass_criteria: /etc/shadow 파일 사용, /etc/passwd에 암호화된 패스워드 미저장(x 표시)
+fail_criteria: /etc/passwd에 평문 또는 암호화 패스워드 직접 저장
+remediation: pwconv 명령어 실행하여 shadow 패스워드 체계로 전환
+ismsp_mapping: ["2.5.2", "2.7.1"]
+rule_ref: rules/unix/U-04.rule.yaml

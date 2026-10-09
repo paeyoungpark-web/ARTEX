@@ -1,0 +1,20 @@
+id: U-07
+verdict_rules:
+  - condition: "Owner is root and permission <= 644"
+    field: owner
+    operator: equals
+    value: "root"
+    extra_field: perm
+    extra_operator: perm_lte
+    extra_value: "644"
+    verdict: pass
+  - condition: "Owner is not root"
+    field: owner
+    operator: not_equals
+    value: "root"
+    verdict: fail
+  - condition: "Permission > 644"
+    field: perm
+    operator: perm_gt
+    extra_value: "644"
+    verdict: fail

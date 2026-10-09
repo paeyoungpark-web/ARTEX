@@ -1,0 +1,23 @@
+id: U-01
+standard: jutonggi
+category: 계정관리
+title: root 계정 원격접속 제한
+description: |
+  시스템 정책에 root 계정의 원격 터미널 접속 차단이 설정되어 있는지 점검.
+  root 계정 원격접속 허용 시 공격자가 무차별 대입공격 등으로 root 권한 탈취 가능.
+risk_level: high
+target_types: [server_unix]
+check_method: script
+script_ref: scripts/unix/U-01.sh
+pass_criteria: |
+  - /etc/ssh/sshd_config에서 PermitRootLogin이 no로 설정
+  - Telnet 서비스 미사용 또는 /etc/securetty에 pts/* 미포함
+fail_criteria: |
+  - PermitRootLogin이 yes 또는 미설정(기본값 허용)
+  - /etc/securetty에 pts/0~pts/x 존재
+remediation: |
+  1. /etc/ssh/sshd_config에서 PermitRootLogin no 설정
+  2. systemctl restart sshd
+  3. Telnet 사용 시 /etc/securetty에서 pts/* 라인 제거
+ismsp_mapping: ["2.5.1", "2.5.2"]
+rule_ref: rules/unix/U-01.rule.yaml

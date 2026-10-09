@@ -1,0 +1,16 @@
+id: U-03
+standard: jutonggi
+category: 계정관리
+title: 계정 잠금 임계값 설정
+description: 사용자 계정 로그인 실패 시 계정 잠금 임계값이 설정되어 있는지 점검
+risk_level: high
+target_types: [server_unix]
+check_method: script
+script_ref: scripts/unix/U-03.sh
+pass_criteria: 로그인 실패 시 계정 잠금 임계값이 5회 이하로 설정
+fail_criteria: 계정 잠금 임계값 미설정 또는 5회 초과
+remediation: |
+  /etc/pam.d/system-auth 또는 /etc/pam.d/password-auth에
+  auth required pam_faillock.so deny=5 unlock_time=600 설정
+ismsp_mapping: ["2.5.2"]
+rule_ref: rules/unix/U-03.rule.yaml

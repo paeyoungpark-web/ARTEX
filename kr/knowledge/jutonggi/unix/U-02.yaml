@@ -1,0 +1,17 @@
+id: U-02
+standard: jutonggi
+category: 계정관리
+title: 패스워드 복잡성 설정
+description: 시스템 정책에 사용자 계정 패스워드 복잡성이 설정되어 있는지 점검
+risk_level: high
+target_types: [server_unix]
+check_method: script
+script_ref: scripts/unix/U-02.sh
+pass_criteria: |
+  - /etc/security/pwquality.conf 또는 /etc/pam.d/system-auth에서
+  - 최소 길이 8자 이상, 영문/숫자/특수문자 혼합 설정
+fail_criteria: 패스워드 복잡성 미설정 또는 최소 기준 미달
+remediation: |
+  /etc/security/pwquality.conf에서 minlen=8, dcredit=-1, ucredit=-1, lcredit=-1, ocredit=-1 설정
+ismsp_mapping: ["2.5.2"]
+rule_ref: rules/unix/U-02.rule.yaml

@@ -1,0 +1,16 @@
+id: U-08
+standard: jutonggi
+category: 파일및디렉터리관리
+title: /etc/shadow 파일 소유자 및 권한 설정
+description: /etc/shadow 파일의 소유자가 root이고 권한이 400 이하인지 점검
+risk_level: high
+target_types: [server_unix]
+check_method: script
+script_ref: scripts/unix/U-08.sh
+pass_criteria: /etc/shadow 파일 소유자 root, 권한 400 이하
+fail_criteria: 소유자가 root가 아니거나 권한이 400 초과
+remediation: |
+  chown root /etc/shadow
+  chmod 400 /etc/shadow
+ismsp_mapping: ["2.5.1", "2.5.2"]
+rule_ref: rules/unix/U-08.rule.yaml

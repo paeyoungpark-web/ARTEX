@@ -1,0 +1,20 @@
+id: U-01
+verdict_rules:
+  - condition: "PermitRootLogin no"
+    field: ssh_permit_root_login
+    operator: equals
+    value: "no"
+    verdict: pass
+  - condition: "PermitRootLogin yes or not set"
+    field: ssh_permit_root_login
+    operator: in
+    value: ["yes", "NOT_SET"]
+    verdict: fail
+  - condition: "Telnet active with pts in securetty"
+    field: telnet_active
+    operator: equals
+    value: true
+    extra_field: securetty_pts_count
+    extra_operator: greater_than
+    extra_value: 0
+    verdict: fail

@@ -1,0 +1,14 @@
+id: U-06
+standard: jutonggi
+category: 파일및디렉터리관리
+title: 파일 및 디렉터리 소유자 설정
+description: 소유자가 존재하지 않는 파일 및 디렉터리 존재 여부 점검
+risk_level: medium
+target_types: [server_unix]
+check_method: script
+script_ref: scripts/unix/U-06.sh
+pass_criteria: 소유자가 존재하지 않는 파일 및 디렉터리가 없음
+fail_criteria: 소유자가 존재하지 않는(삭제된 계정) 파일 존재
+remediation: 소유자가 없는 파일에 적절한 소유자 설정 또는 파일 삭제
+ismsp_mapping: ["2.5.1"]
+rule_ref: rules/unix/U-06.rule.yaml
